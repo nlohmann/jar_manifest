@@ -20,5 +20,7 @@ setup(name='jar_manifest',
       author_email='mail@nlohmann.me',
       license='MIT',
       packages=['jar_manifest'],
+      test_suite='nose.collector',
+      tests_require=['nose'],
       include_package_data=True,
       zip_safe=False)
