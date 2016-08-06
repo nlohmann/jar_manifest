@@ -1,0 +1,17 @@
+#!/usr/bin/env python
+
+import jar_manifest
+import argparse
+import json
+
+parser = argparse.ArgumentParser(description='Print a jar file\'s manifest as JSON.')
+parser.add_argument('jarfiles', metavar='JARFILE', type=str,
+                    help='jar file to read')
+parser.add_argument('-r', '--recursive', action='store_true',
+	                help='recurse into embedded jar files')
+
+args = parser.parse_args()
+
+print json.dumps(jar_manifest.manifest(args.jarfiles,
+	                                   recursive=args.recursive),
+                 indent=2, sort_keys=True)

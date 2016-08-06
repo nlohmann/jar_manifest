@@ -1,22 +1,20 @@
-import zipfile
+from zipfile import ZipFile
+from os.path import splitext
+from cStringIO import StringIO
 
 
-def manifest(jar_filename):
-    """
-    Returns the content of a jar file's MANIFEST file as dictionary.
-    """
-    jarfile = zipfile.ZipFile(jar_filename)
+def manifest_internal(jarfile, jar_filename, data, recursive):
     manifest = jarfile.open('META-INF/MANIFEST.MF')
 
     key = None
     section = {}
-    result = []
+    data[jar_filename] = []
 
     for line in [x.rstrip('\n\r') for x in manifest.readlines()]:
         # empty line - end of current section
         if len(line) == 0:
             # store and reset current section
-            result.append(section)
+            data[jar_filename].append(section)
             section = {}
 
         # line begins with a space: continuation of value
@@ -31,6 +29,20 @@ def manifest(jar_filename):
 
     # if manifest does not end with empty line, store last section
     if len(section.keys()) != 0:
-        result.append(section)
+        data[jar_filename].append(section)
 
-    return result
+    # recurse into embedded jar files
+    if recursive:
+        embedded_jarfiles = [x for x in jarfile.namelist() if splitext(x)[1] == '.jar']
+        for j in embedded_jarfiles:
+            zfiledata = StringIO(jarfile.read(j))
+            manifest_internal(ZipFile(zfiledata), jar_filename + '/' + j, data, recursive)
+
+
+def manifest(jar_filename, recursive=True):
+    """
+    Returns the content of a jar file's MANIFEST file as dictionary.
+    """
+    data = dict()
+    manifest_internal(ZipFile(jar_filename), jar_filename, data, recursive)
+    return data

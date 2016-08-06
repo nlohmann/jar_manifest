@@ -11,6 +11,6 @@ class TestManifest(TestCase):
 		junit_jarfile.close()
 
 		junit_manifest = jar_manifest.manifest('junit.jar')
-		self.assertEqual(junit_manifest[0]['Created-By'], 'Apache Maven 3.0.4')
-		self.assertEqual(junit_manifest[0]['Implementation-Title'], 'JUnit')
+		self.assertEqual(junit_manifest['junit.jar'][0]['Created-By'], 'Apache Maven 3.0.4')
+		self.assertEqual(junit_manifest['junit.jar'][0]['Implementation-Title'], 'JUnit')
 		os.remove('junit.jar')

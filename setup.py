@@ -5,7 +5,7 @@ def readme():
         return f.read()
 
 setup(name='jar_manifest',
-      version='0.1',
+      version='0.2',
       description='Returns the content of a jar file\'s MANIFEST as dict.',
       long_description=readme(),
       classifiers=[
@@ -19,6 +19,7 @@ setup(name='jar_manifest',
       author='Niels Lohmann',
       author_email='mail@nlohmann.me',
       license='MIT',
+      scripts=['jar_manifest/bin/read_manifest'],
       packages=['jar_manifest'],
       test_suite='nose.collector',
       tests_require=['nose'],
