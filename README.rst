@@ -1,7 +1,7 @@
 jar_manifest
 ------------
 
-To get a jar file's manifest as dict, just:
+To get a jar file's manifest as dict, just::
 
     >>> import jar_manifest
     >>> jar_manifest.manifest('junit-4.12.jar')
